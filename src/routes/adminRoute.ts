@@ -8,8 +8,8 @@ const adminRouter = express.Router();
 
 adminRouter.post(
   "/add-barber",
-  schemaValition(barberRegisterSchema),
   upload.single("image"),
+  schemaValition(barberRegisterSchema),
   addBarber
 );
 

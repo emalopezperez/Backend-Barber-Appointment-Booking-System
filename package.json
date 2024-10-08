@@ -17,13 +17,18 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/multer": "^1.4.12",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
+    "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "mongoose": "^8.7.0",
+    "multer": "^1.4.5-lts.1",
     "zod": "^3.23.8"
   }
 }
