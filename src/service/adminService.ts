@@ -1,28 +1,27 @@
 import BarberModel from "../models/barberModel";
-import { Barber } from "../types/barber-type";
-import { Request } from "express";
-import bcrypt from "bcryptjs";
 import { uploadImage } from "../utils/uploadImage";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const addBarberService = async (req: Request) => {
+interface BarberData {
+  name: string;
+  email: string;
+  password: string;
+  about: string;
+  available: boolean;
+  slots_booked: number;
+}
+
+const addBarberService = async (
+  dataBarber: BarberData,
+  imageFile: Express.Multer.File
+) => {
   try {
-    const dataBarber: Barber = req.body;
-    const imageFile = req.file;
-
-    const {
-      name,
-      email,
-      password,
-      about,
-      available,
-      slots_booked,
-      date,
-      address,
-    } = dataBarber;
+    const { name, email, password, about, available, slots_booked } =
+      dataBarber;
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
     const imageUrl = await uploadImage(imageFile);
 
     const data = {
@@ -32,19 +31,29 @@ const addBarberService = async (req: Request) => {
       about,
       available,
       slots_booked,
-      date,
-      address,
+      date: Date.now(),
       image: imageUrl,
     };
 
     const newBarber = new BarberModel(data);
     const savedBarber = await newBarber.save();
+
     return savedBarber;
-    
   } catch (error) {
-    console.error("Error al guardar el barbero:", error);
     throw new Error("No se pudo guardar el barbero");
   }
 };
 
-export { addBarberService };
+const loginAdminService = async (email: string, password: string) => {
+  if (
+    email === process.env.ADMIN_EMAIL &&
+    password === process.env.ADMIN_PASSWORD
+  ) {
+    const token = jwt.sign({ email }, process.env.JWT_SECRET || "");
+    return { success: true, token };
+  } else {
+    return { success: false, message: "Credenciales inválidas" };
+  }
+};
+
+export { addBarberService, loginAdminService };

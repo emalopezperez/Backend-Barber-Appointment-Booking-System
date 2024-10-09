@@ -8,9 +8,7 @@ export const barberRegisterSchema = z.object({
       .string()
       .min(6, "La contraseña debe tener al menos 6 caracteres"),
     about: z.string(),
-    address: z.string(),
     available: z.string(),
     slots_booked: z.string(),
-    date: z.string(),
   }),
 });

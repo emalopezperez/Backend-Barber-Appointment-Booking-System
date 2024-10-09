@@ -1,8 +1,9 @@
 import express from "express";
-import { addBarber } from "../controllers/adminController";
 import upload from "../middleware/multer";
+import { addBarber, loginAdmin } from "../controllers/adminController";
 import { schemaValition } from "../middleware/schemaValidator";
 import { barberRegisterSchema } from "../schemas/barberSchemas";
+import { adminLoginSchema } from "../schemas/adminSchemas";
 
 const adminRouter = express.Router();
 
@@ -12,5 +13,7 @@ adminRouter.post(
   schemaValition(barberRegisterSchema),
   addBarber
 );
+
+adminRouter.post("/login", schemaValition(adminLoginSchema), loginAdmin);
 
 export default adminRouter;
