@@ -25,7 +25,7 @@ const addBarber = async (req: Request, res: Response) => {
   }
 };
 
-const loginAdmin = async (req: Request, res: Response): Promise<void> => {
+const loginAdmin = async (req: Request, res: Response)=> {
   try {
     const { email, password } = req.body;
     const result = await loginAdminService(email, password);

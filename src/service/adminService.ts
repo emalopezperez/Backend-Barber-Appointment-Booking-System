@@ -1,16 +1,8 @@
 import BarberModel from "../models/barberModel";
+import { BarberData } from "../types/barber-type";
 import { uploadImage } from "../utils/uploadImage";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
-interface BarberData {
-  name: string;
-  email: string;
-  password: string;
-  about: string;
-  available: boolean;
-  slots_booked: number;
-}
 
 const addBarberService = async (
   dataBarber: BarberData,
@@ -49,7 +41,7 @@ const loginAdminService = async (email: string, password: string) => {
     email === process.env.ADMIN_EMAIL &&
     password === process.env.ADMIN_PASSWORD
   ) {
-    const token = jwt.sign({ email }, process.env.JWT_SECRET || "");
+    const token = jwt.sign(email + password, process.env.JWT_SECRET || "");
     return { success: true, token };
   } else {
     return { success: false, message: "Credenciales inválidas" };
