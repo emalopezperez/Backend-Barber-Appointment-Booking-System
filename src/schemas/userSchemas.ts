@@ -10,7 +10,6 @@ export const userRegistrationSchema = z.object({
 
 export const userLoginSchema = z.object({
   body: z.object({
-    username: z.string(),
     email: z.string().email(),
     password: z.string().min(8),
   }),

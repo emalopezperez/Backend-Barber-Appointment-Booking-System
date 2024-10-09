@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+
+export const barberLoginSchema = z.object({
+  body: z.object({
+    email: z.string().email(),
+    password: z.string().min(8),
+  }),
+});
+
+
 export const barberRegisterSchema = z.object({
   body: z.object({
     name: z.string().min(1, "El nombre es obligatorio"),

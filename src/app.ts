@@ -4,6 +4,7 @@ import connectDB from "./config/moongodb";
 import "dotenv/config";
 import adminRouter from "./routes/adminRoute";
 import connectCloudinary from "./config/cloudinary";
+import barberRouter from "./routes/barberRoute";
 
 // app config
 const port = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/admin", adminRouter);
+app.use("/api/barber", barberRouter);
 
 app.listen(port, () => {
   console.log("Api lsita por el puerto ", port);
