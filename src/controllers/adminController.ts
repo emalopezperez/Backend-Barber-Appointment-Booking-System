@@ -1,5 +1,32 @@
 import { Request, Response } from "express";
-import { addBarberService, loginAdminService } from "../service/adminService";
+import {
+  addBarberService,
+  loginAdminService,
+  getAllBarbersService,
+} from "../service/adminService";
+
+const loginAdmin = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    const result = await loginAdminService(email, password);
+
+    if (result.success) {
+      res.status(200).json({
+        message: "Iniciado sesión correctamente",
+        token: result.token,
+      });
+    } else {
+      res.status(401).json({
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error en el servidor",
+      error: (error as Error).message,
+    });
+  }
+};
 
 const addBarber = async (req: Request, res: Response) => {
   try {
@@ -25,27 +52,17 @@ const addBarber = async (req: Request, res: Response) => {
   }
 };
 
-const loginAdmin = async (req: Request, res: Response)=> {
+const getAllBarbers = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
-    const result = await loginAdminService(email, password);
+    const allBarbers = await getAllBarbersService();
 
-    if (result.success) {
-      res.status(200).json({
-        message: "Iniciado sesión correctamente",
-        token: result.token,
-      });
-    } else {
-      res.status(401).json({
-        message: result.message,
-      });
-    }
+    res.status(201).json({ message: "Lista de barberos", barbers: allBarbers });
   } catch (error) {
     res.status(500).json({
-      message: "Error en el servidor",
+      message: "Error ",
       error: (error as Error).message,
     });
   }
 };
 
-export { addBarber, loginAdmin };
+export { addBarber, loginAdmin, getAllBarbers };

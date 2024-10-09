@@ -1,6 +1,10 @@
 import express from "express";
 import upload from "../middleware/multer";
-import { addBarber, loginAdmin } from "../controllers/adminController";
+import {
+  addBarber,
+  loginAdmin,
+  getAllBarbers,
+} from "../controllers/adminController";
 import { schemaValition } from "../middleware/schemaValidator";
 import { barberRegisterSchema } from "../schemas/barberSchemas";
 import { adminLoginSchema } from "../schemas/adminSchemas";
@@ -16,5 +20,7 @@ adminRouter.post(
   schemaValition(barberRegisterSchema),
   addBarber
 );
+
+adminRouter.get("/get-barbers", authAdmin, getAllBarbers);
 
 export default adminRouter;

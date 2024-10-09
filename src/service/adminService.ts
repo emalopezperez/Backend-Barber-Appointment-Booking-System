@@ -4,6 +4,18 @@ import { uploadImage } from "../utils/uploadImage";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+const loginAdminService = async (email: string, password: string) => {
+  if (
+    email === process.env.ADMIN_EMAIL &&
+    password === process.env.ADMIN_PASSWORD
+  ) {
+    const token = jwt.sign(email + password, process.env.JWT_SECRET || "");
+    return { success: true, token };
+  } else {
+    return { success: false, message: "Credenciales inválidas" };
+  }
+};
+
 const addBarberService = async (
   dataBarber: BarberData,
   imageFile: Express.Multer.File
@@ -36,16 +48,14 @@ const addBarberService = async (
   }
 };
 
-const loginAdminService = async (email: string, password: string) => {
-  if (
-    email === process.env.ADMIN_EMAIL &&
-    password === process.env.ADMIN_PASSWORD
-  ) {
-    const token = jwt.sign(email + password, process.env.JWT_SECRET || "");
-    return { success: true, token };
-  } else {
-    return { success: false, message: "Credenciales inválidas" };
+const getAllBarbersService = async () => {
+  try {
+    const barbers = await BarberModel.find({}).select("-password");
+
+    return barbers;
+  } catch (error) {
+    throw new Error("No se pudo guardar el barbero");
   }
 };
 
-export { addBarberService, loginAdminService };
+export { addBarberService, loginAdminService, getAllBarbersService };
