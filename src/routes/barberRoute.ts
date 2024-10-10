@@ -5,6 +5,6 @@ import { loginBarber } from "../controllers/barberController";
 
 const barberRouter = express.Router();
 
-barberRouter.post("/login", schemaValition(barberLoginSchema), loginBarber);
+barberRouter.post("/auth/login", schemaValition(barberLoginSchema), loginBarber);
 
 export default barberRouter;

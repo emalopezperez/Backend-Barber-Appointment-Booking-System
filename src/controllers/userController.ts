@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
-import { loginUserService, registerUserService } from "../service/userService";
-import { error } from "console";
+import {
+  loginUserService,
+  registerUserService,
+  getProfileUserService,
+} from "../service/userService";
 
 const registerUser = async (req: Request, res: Response) => {
   const dataUser = req.body;
@@ -51,4 +54,26 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export { loginUser, registerUser };
+const getProfileUser = async (req: Request, res: Response) => {
+  const { userId } = req.body;
+  try {
+    const result = await getProfileUserService(userId);
+
+    if (result.success) {
+      res.status(200).json({
+        message: "Success",
+        data: result.data,
+      });
+    }
+    res.status(404).json({
+      message: result.message,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user profile",
+      error: (error as Error).message,
+    });
+  }
+};
+
+export { loginUser, registerUser, getProfileUser };

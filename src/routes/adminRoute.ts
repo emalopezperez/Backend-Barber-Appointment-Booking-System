@@ -12,7 +12,7 @@ import authAdmin from "../middleware/authAdmin";
 
 const adminRouter = express.Router();
 
-adminRouter.post("/login", schemaValition(adminLoginSchema), loginAdmin);
+adminRouter.post("/auth/login", schemaValition(adminLoginSchema), loginAdmin);
 adminRouter.post(
   "/add-barber",
   authAdmin,

@@ -54,4 +54,18 @@ const loginUserService = async (email: string, password: string) => {
   }
 };
 
-export { loginUserService, registerUserService };
+const getProfileUserService = async (userId: string) => {
+  try {
+    const user = await userModel.findById(userId).select("-password");
+
+    if (user) {
+      return { success: true, data: user };
+    } else {
+      return { success: false, message: "User not found" };
+    }
+  } catch (error) {
+    throw new Error("Error retrieving user profile");
+  }
+};
+
+export { loginUserService, registerUserService, getProfileUserService };
