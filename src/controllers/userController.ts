@@ -4,6 +4,7 @@ import {
   registerUserService,
   getProfileUserService,
   bookAppointmentService,
+  cancelAppointmentService,
 } from "../service/userService";
 
 const registerUser = async (req: Request, res: Response) => {
@@ -107,4 +108,33 @@ const bookAppointment = async (req: Request, res: Response) => {
   }
 };
 
-export { loginUser, registerUser, getProfileUser, bookAppointment };
+const cancelAppointment = async (req: Request, res: Response) => {
+  const { userId, appointmentId } = req.body;
+
+  try {
+    const result = await cancelAppointmentService(userId, appointmentId);
+
+    if (result.success) {
+      return res.status(200).json({
+        message: "Cancel appointment successfully",
+      });
+    } else {
+      return res.status(400).json({
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error cancel appointment",
+      error: (error as Error).message,
+    });
+  }
+};
+
+export {
+  loginUser,
+  registerUser,
+  getProfileUser,
+  bookAppointment,
+  cancelAppointment,
+};

@@ -34,3 +34,10 @@ export const bookAppointmentSchema = z.object({
     message: z.string().min(1).max(100),
   }),
 });
+
+export const cancelAppointmentSchema = z.object({
+  body: z.object({
+    userId: z.string().regex(/^[a-f\d]{24}$/),
+    appointmentId: z.string().regex(/^[a-f\d]{24}$/),
+  }),
+});

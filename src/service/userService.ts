@@ -122,9 +122,65 @@ const bookAppointmentService = async (
   }
 };
 
+const cancelAppointmentService = async (
+  userId: string,
+  appointmentId: string
+) => {
+  try {
+    const appointmentData = await appointmentModel.findById(appointmentId);
+
+    if (!appointmentData) {
+      return { success: false, message: "Appointment not found" };
+    }
+
+    const {
+      userId: appointmentUserId,
+      barberId,
+      slotDate,
+      slotTime,
+    } = appointmentData;
+
+    if (appointmentUserId !== userId) {
+      return { success: false, message: "Unauthorized action" };
+    }
+
+    await appointmentModel.findByIdAndUpdate(appointmentId, {
+      cancelled: true,
+    });
+
+    const barberData = await barberModel.findById(barberId).select("-password");
+    if (!barberData) {
+      return { success: false, message: "Barber not found" };
+    }
+
+    const bookedSlots = barberData.slots_booked;
+    bookedSlots[slotDate] = bookedSlots[slotDate].filter(
+      (e: any) => e !== slotTime
+    );
+
+    
+    if (bookedSlots[slotDate].length === 0) {
+      delete bookedSlots[slotDate];
+    }
+
+    const result = await barberModel.findByIdAndUpdate(barberId, {
+      slots_booked: bookedSlots,
+    });
+
+    if (result) {
+      return { success: true, message: "Appointment Cancelled" };
+    } else {
+      return { success: false, message: "Error canceling appointment" };
+    }
+  } catch (error) {
+    throw new Error("Error cancel appointment ");
+  }
+};
+
 export {
   loginUserService,
   registerUserService,
   getProfileUserService,
   bookAppointmentService,
+  cancelAppointmentService,
 };
