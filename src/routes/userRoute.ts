@@ -3,6 +3,7 @@ import {
   bookAppointment,
   cancelAppointment,
   getProfileUser,
+  listAppointment,
   loginUser,
   registerUser,
 } from "../controllers/userController";
@@ -36,6 +37,7 @@ userRouter.post(
   cancelAppointment
 );
 
+userRouter.post("/appointments", authUser, listAppointment);
 userRouter.get("/get-profile", authUser, getProfileUser);
 
 export default userRouter;

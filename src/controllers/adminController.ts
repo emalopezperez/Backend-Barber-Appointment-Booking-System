@@ -65,4 +65,5 @@ const getAllBarbers = async (req: Request, res: Response) => {
   }
 };
 
+
 export { addBarber, loginAdmin, getAllBarbers };

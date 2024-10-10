@@ -5,6 +5,7 @@ import {
   getProfileUserService,
   bookAppointmentService,
   cancelAppointmentService,
+  listAppointmentService,
 } from "../service/userService";
 
 const registerUser = async (req: Request, res: Response) => {
@@ -131,10 +132,28 @@ const cancelAppointment = async (req: Request, res: Response) => {
   }
 };
 
+const listAppointment = async (req: Request, res: Response) => {
+  const { userId } = req.body;
+  try {
+    const result = await listAppointmentService(userId);
+
+    res.status(200).json({
+      message: "Success",
+      data: result.data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving user profile",
+      error: (error as Error).message,
+    });
+  }
+};
+
 export {
   loginUser,
   registerUser,
   getProfileUser,
   bookAppointment,
   cancelAppointment,
+  listAppointment,
 };

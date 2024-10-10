@@ -158,7 +158,6 @@ const cancelAppointmentService = async (
       (e: any) => e !== slotTime
     );
 
-    
     if (bookedSlots[slotDate].length === 0) {
       delete bookedSlots[slotDate];
     }
@@ -177,10 +176,21 @@ const cancelAppointmentService = async (
   }
 };
 
+const listAppointmentService = async (userId: string) => {
+  try {
+    const appointments = await appointmentModel.find({ userId });
+
+    return { success: true, data: appointments };
+  } catch (error) {
+    throw new Error("Error retrieving user profile");
+  }
+};
+
 export {
   loginUserService,
   registerUserService,
   getProfileUserService,
   bookAppointmentService,
   cancelAppointmentService,
+  listAppointmentService,
 };
