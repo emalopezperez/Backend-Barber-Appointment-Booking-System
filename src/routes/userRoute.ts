@@ -1,15 +1,16 @@
 import express from "express";
-import { schemaValition } from "../middleware/schemaValidator";
 import {
+  bookAppointment,
   getProfileUser,
   loginUser,
   registerUser,
 } from "../controllers/userController";
 import {
+  bookAppointmentSchema,
   userLoginSchema,
   userRegistrationSchema,
 } from "../schemas/userSchemas";
-
+import { schemaValition } from "../middleware/schemaValidator";
 import authUser from "../middleware/authUser";
 
 const userRouter = express.Router();
@@ -20,6 +21,12 @@ userRouter.post(
   registerUser
 );
 userRouter.post("/auth/login", schemaValition(userLoginSchema), loginUser);
+userRouter.post(
+  "/book-appointment",
+  schemaValition(bookAppointmentSchema),
+  authUser,
+  bookAppointment
+);
 
 userRouter.get("/get-profile", authUser, getProfileUser);
 

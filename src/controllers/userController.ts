@@ -3,6 +3,7 @@ import {
   loginUserService,
   registerUserService,
   getProfileUserService,
+  bookAppointmentService,
 } from "../service/userService";
 
 const registerUser = async (req: Request, res: Response) => {
@@ -76,4 +77,34 @@ const getProfileUser = async (req: Request, res: Response) => {
   }
 };
 
-export { loginUser, registerUser, getProfileUser };
+const bookAppointment = async (req: Request, res: Response) => {
+  const { userId, barberId, slotDate, slotTime, message } = req.body;
+
+  try {
+    const result = await bookAppointmentService(
+      userId,
+      barberId,
+      slotDate,
+      slotTime,
+      message
+    );
+
+    if (result.success) {
+      return res.status(200).json({
+        message: "Appointment booked successfully",
+        data: result.data,
+      });
+    } else {
+      return res.status(400).json({
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error booking appointment",
+      error: (error as Error).message,
+    });
+  }
+};
+
+export { loginUser, registerUser, getProfileUser, bookAppointment };

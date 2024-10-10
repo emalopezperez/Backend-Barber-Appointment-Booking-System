@@ -1,4 +1,6 @@
 import userModel from "../models/userModel";
+import barberModel from "../models/barberModel";
+import appointmentModel from "../models/appointmentModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../types/user-type";
@@ -68,4 +70,61 @@ const getProfileUserService = async (userId: string) => {
   }
 };
 
-export { loginUserService, registerUserService, getProfileUserService };
+const bookAppointmentService = async (
+  userId: string,
+  barberId: string,
+  slotDate: string,
+  slotTime: string,
+  message: string
+) => {
+  try {
+    const barberData = await barberModel
+      .findById(barberId)
+      .select("-password -slots_booked");
+
+    if (!barberData.available) {
+      return { success: false, message: "Barber Not Available" };
+    }
+
+    const barberSlots = await barberModel.findById(barberId, "slots_booked");
+    const slotsBooked = barberSlots.slots_booked || {};
+
+    const isSlotTaken = slotsBooked[slotDate]?.includes(slotTime);
+    if (isSlotTaken) {
+      return { success: false, message: "Slot Not Available" };
+    }
+
+    slotsBooked[slotDate] = slotsBooked[slotDate] || [];
+    slotsBooked[slotDate].push(slotTime);
+
+    const userData = await userModel.findById(userId).select("-password");
+
+    const newAppointment = new appointmentModel({
+      userId,
+      barberId,
+      userData,
+      barberData,
+      slotTime,
+      slotDate,
+      message,
+      date: Date.now(),
+    });
+
+    await newAppointment.save();
+    await barberModel.findByIdAndUpdate(barberId, {
+      slots_booked: slotsBooked,
+    });
+
+    return { success: true, data: newAppointment };
+  } catch (error) {
+    console.error("Error booking appointment:", error);
+    throw new Error("Error booking appointment");
+  }
+};
+
+export {
+  loginUserService,
+  registerUserService,
+  getProfileUserService,
+  bookAppointmentService,
+};

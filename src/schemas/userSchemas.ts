@@ -24,3 +24,13 @@ export const userLoginSchema = z.object({
     password: z.string().min(8),
   }),
 });
+
+export const bookAppointmentSchema = z.object({
+  body: z.object({
+    userId: z.string().regex(/^[a-f\d]{24}$/),
+    barberId: z.string().regex(/^[a-f\d]{24}$/),
+    slotDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    slotTime: z.string().regex(/^([0-1]\d|2[0-3]):([0-5]\d) (AM|PM)$/),
+    message: z.string().min(1).max(100),
+  }),
+});
