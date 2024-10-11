@@ -1,4 +1,6 @@
+import appointmentModel from "../models/appointmentModel";
 import BarberModel from "../models/barberModel";
+import userModel from "../models/userModel";
 import { BarberData } from "../types/barber-type";
 import { uploadImage } from "../utils/uploadImage";
 import bcrypt from "bcryptjs";
@@ -54,8 +56,31 @@ const getAllBarbersService = async () => {
 
     return barbers;
   } catch (error) {
+    throw new Error("No se pudo obtener todos los barberos");
+  }
+};
+
+const getDataDashboardService = async () => {
+  try {
+    const barbers = await BarberModel.find({}).select("-password");
+    const users = await userModel.find({});
+    const appointments = await appointmentModel.find({});
+
+    const data = {
+      barbers,
+      users,
+      appointments,
+    };
+
+    return data;
+  } catch (error) {
     throw new Error("No se pudo guardar el barbero");
   }
 };
 
-export { addBarberService, loginAdminService, getAllBarbersService };
+export {
+  addBarberService,
+  loginAdminService,
+  getAllBarbersService,
+  getDataDashboardService,
+};

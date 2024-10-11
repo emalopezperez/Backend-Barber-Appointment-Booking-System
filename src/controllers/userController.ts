@@ -16,6 +16,7 @@ const registerUser = async (req: Request, res: Response) => {
 
     if (result.success) {
       res.status(201).json({
+        success: true,
         message: "User registered successfully",
         token: result.token,
         dataUser: dataUser,
@@ -41,6 +42,7 @@ const loginUser = async (req: Request, res: Response) => {
 
     if (result.success) {
       res.status(200).json({
+        success: true,
         message: "Logged in successfully",
         token: result.token,
       });
@@ -64,6 +66,7 @@ const getProfileUser = async (req: Request, res: Response) => {
 
     if (result.success) {
       res.status(200).json({
+        success: true,
         message: "Success",
         data: result.data,
       });
@@ -93,6 +96,7 @@ const bookAppointment = async (req: Request, res: Response) => {
 
     if (result.success) {
       return res.status(200).json({
+        success: true,
         message: "Appointment booked successfully",
         data: result.data,
       });
@@ -117,6 +121,7 @@ const cancelAppointment = async (req: Request, res: Response) => {
 
     if (result.success) {
       return res.status(200).json({
+        success: true,
         message: "Cancel appointment successfully",
       });
     } else {
@@ -138,6 +143,7 @@ const listAppointment = async (req: Request, res: Response) => {
     const result = await listAppointmentService(userId);
 
     res.status(200).json({
+      success: true,
       message: "Success",
       data: result.data,
     });

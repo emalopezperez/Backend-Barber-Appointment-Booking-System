@@ -9,6 +9,7 @@ const loginBarber = async (req: Request, res: Response) => {
 
     if (result.success) {
       res.status(200).json({
+        success: true,
         message: "Logged in successfully",
         token: result.token,
       });

@@ -3,6 +3,7 @@ import {
   addBarberService,
   loginAdminService,
   getAllBarbersService,
+  getDataDashboardService,
 } from "../service/adminService";
 
 const loginAdmin = async (req: Request, res: Response) => {
@@ -12,6 +13,7 @@ const loginAdmin = async (req: Request, res: Response) => {
 
     if (result.success) {
       res.status(200).json({
+        success: true,
         message: "Iniciado sesión correctamente",
         token: result.token,
       });
@@ -35,6 +37,7 @@ const addBarber = async (req: Request, res: Response) => {
 
     if (!imageFile) {
       res.status(400).json({
+        success: true,
         message: "Error: se requiere una imagen para agregar al barbero",
       });
       return;
@@ -56,7 +59,7 @@ const getAllBarbers = async (req: Request, res: Response) => {
   try {
     const allBarbers = await getAllBarbersService();
 
-    res.status(201).json({ message: "Lista de barberos", barbers: allBarbers });
+    res.status(201).json({success: true, message: "Lista de barberos", barbers: allBarbers });
   } catch (error) {
     res.status(500).json({
       message: "Error ",
@@ -65,5 +68,19 @@ const getAllBarbers = async (req: Request, res: Response) => {
   }
 };
 
+const getDataDashboard = async (req: Request, res: Response) => {
+  try {
+    const dataDashboard = await getDataDashboardService();
 
-export { addBarber, loginAdmin, getAllBarbers };
+    res
+      .status(201)
+      .json({ success: true, message: "Data dashboard", data: dataDashboard });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error ",
+      error: (error as Error).message,
+    });
+  }
+};
+
+export { addBarber, loginAdmin, getAllBarbers, getDataDashboard };
