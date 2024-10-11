@@ -74,7 +74,17 @@ const getDataDashboardService = async () => {
 
     return data;
   } catch (error) {
-    throw new Error("No se pudo guardar el barbero");
+    throw new Error("No se pudo obtener la data");
+  }
+};
+
+const getAllAppointmentsService = async () => {
+  try {
+    const data = await appointmentModel.find({});
+
+    return data;
+  } catch (error) {
+    throw new Error("No se pudo obtener la data");
   }
 };
 
@@ -83,4 +93,5 @@ export {
   loginAdminService,
   getAllBarbersService,
   getDataDashboardService,
+  getAllAppointmentsService,
 };

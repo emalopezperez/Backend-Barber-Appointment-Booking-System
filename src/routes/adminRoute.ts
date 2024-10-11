@@ -5,6 +5,7 @@ import {
   loginAdmin,
   getAllBarbers,
   getDataDashboard,
+  getAllAppointments,
 } from "../controllers/adminController";
 import { schemaValition } from "../middleware/schemaValidator";
 import { barberRegisterSchema } from "../schemas/barberSchemas";
@@ -24,5 +25,6 @@ adminRouter.post(
 
 adminRouter.get("/get-barbers", authAdmin, getAllBarbers);
 adminRouter.get("/get-data-dashboard", authAdmin, getDataDashboard);
+adminRouter.get("/get-all-appointments", authAdmin, getAllAppointments);
 
 export default adminRouter;

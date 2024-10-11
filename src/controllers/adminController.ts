@@ -4,6 +4,7 @@ import {
   loginAdminService,
   getAllBarbersService,
   getDataDashboardService,
+  getAllAppointmentsService,
 } from "../service/adminService";
 
 const loginAdmin = async (req: Request, res: Response) => {
@@ -59,7 +60,11 @@ const getAllBarbers = async (req: Request, res: Response) => {
   try {
     const allBarbers = await getAllBarbersService();
 
-    res.status(201).json({success: true, message: "Lista de barberos", barbers: allBarbers });
+    res.status(201).json({
+      success: true,
+      message: "Lista de barberos",
+      barbers: allBarbers,
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error ",
@@ -83,4 +88,25 @@ const getDataDashboard = async (req: Request, res: Response) => {
   }
 };
 
-export { addBarber, loginAdmin, getAllBarbers, getDataDashboard };
+const getAllAppointments = async (req: Request, res: Response) => {
+  try {
+    const appointments = await getAllAppointmentsService();
+
+    res
+      .status(201)
+      .json({ success: true, message: "List appointments", data: appointments });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error ",
+      error: (error as Error).message,
+    });
+  }
+};
+
+export {
+  addBarber,
+  loginAdmin,
+  getAllBarbers,
+  getDataDashboard,
+  getAllAppointments,
+};
