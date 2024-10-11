@@ -6,6 +6,7 @@ import {
   getDataDashboardService,
   getAllAppointmentsService,
   cancelAppointmentService,
+  deleteBarberService,
 } from "../service/adminService";
 
 const loginAdmin = async (req: Request, res: Response) => {
@@ -52,6 +53,25 @@ const addBarber = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       message: "Error al agregar barbero",
+      error: (error as Error).message,
+    });
+  }
+};
+
+const deleteBarber = async (req: Request, res: Response) => {
+  try {
+    const { barberId } = req.body;
+
+    const barberDelete = await deleteBarberService(barberId);
+
+    res.status(201).json({
+      success: true,
+      message: "Barber deleted",
+      data: barberDelete,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error ",
       error: (error as Error).message,
     });
   }
@@ -112,13 +132,11 @@ const cancelAppointment = async (req: Request, res: Response) => {
 
     const appoimentCancel = await cancelAppointmentService(appointmentId);
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Cancelacion exitosa",
-        data: appoimentCancel,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Cancelacion exitosa",
+      data: appoimentCancel,
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error ",
@@ -134,4 +152,5 @@ export {
   getDataDashboard,
   getAllAppointments,
   cancelAppointment,
+  deleteBarber
 };

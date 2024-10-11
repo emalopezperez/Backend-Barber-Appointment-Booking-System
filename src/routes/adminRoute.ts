@@ -7,6 +7,7 @@ import {
   getDataDashboard,
   getAllAppointments,
   cancelAppointment,
+  deleteBarber,
 } from "../controllers/adminController";
 import { schemaValition } from "../middleware/schemaValidator";
 import { barberRegisterSchema } from "../schemas/barberSchemas";
@@ -28,5 +29,7 @@ adminRouter.post(
 adminRouter.get("/get-barbers", authAdmin, getAllBarbers);
 adminRouter.get("/get-data-dashboard", authAdmin, getDataDashboard);
 adminRouter.get("/get-all-appointments", authAdmin, getAllAppointments);
+
+adminRouter.delete("/delete-barber", authAdmin, deleteBarber);
 
 export default adminRouter;

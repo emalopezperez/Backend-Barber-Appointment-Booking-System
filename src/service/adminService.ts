@@ -1,4 +1,5 @@
 import appointmentModel from "../models/appointmentModel";
+import barberModel from "../models/barberModel";
 import BarberModel from "../models/barberModel";
 import userModel from "../models/userModel";
 import { BarberData } from "../types/barber-type";
@@ -103,6 +104,16 @@ const cancelAppointmentService = async (appointmentId: string) => {
   }
 };
 
+const deleteBarberService = async (barberId: string) => {
+  try {
+    const barberDelete = await barberModel.findByIdAndDelete(barberId);
+
+    return barberDelete;
+  } catch (error) {
+    throw new Error("Error del barber");
+  }
+};
+
 export {
   addBarberService,
   loginAdminService,
@@ -110,4 +121,5 @@ export {
   getDataDashboardService,
   getAllAppointmentsService,
   cancelAppointmentService,
+  deleteBarberService,
 };
