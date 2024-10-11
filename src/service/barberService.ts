@@ -1,4 +1,5 @@
 import barberModel from "../models/barberModel";
+import appointmentModel from "../models/appointmentModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -23,4 +24,14 @@ const loginBarberService = async (email: string, password: string) => {
   }
 };
 
-export { loginBarberService };
+const appointmentsBarberService = async (barberId: string) => {
+  try {
+    const appointments = await appointmentModel.find({ barberId });
+
+    return { success: true, data: appointments };
+  } catch (error) {
+    throw new Error("Error ");
+  }
+};
+
+export { loginBarberService, appointmentsBarberService };

@@ -145,6 +145,8 @@ const cancelAppointment = async (req: Request, res: Response) => {
   }
 };
 
+
+
 export {
   addBarber,
   loginAdmin,

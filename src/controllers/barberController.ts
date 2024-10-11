@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { loginBarberService } from "../service/barberService";
+import {
+  appointmentsBarberService,
+  loginBarberService,
+} from "../service/barberService";
 
 const loginBarber = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -26,4 +29,23 @@ const loginBarber = async (req: Request, res: Response) => {
   }
 };
 
-export { loginBarber };
+const appointmentsBarber = async (req: Request, res: Response) => {
+  try {
+    const { barberId } = req.body;
+
+    const appointments = await appointmentsBarberService(barberId);
+
+    return res.status(200).json({
+      success: true,
+      message: "List appointments",
+      data: appointments,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error get appointments barber",
+      error: (error as Error).message,
+    });
+  }
+};
+
+export { loginBarber, appointmentsBarber };
