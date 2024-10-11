@@ -88,10 +88,26 @@ const getAllAppointmentsService = async () => {
   }
 };
 
+const cancelAppointmentService = async (appointmentId: string) => {
+  try {
+    const appointment = await appointmentModel.findByIdAndUpdate(
+      appointmentId,
+      {
+        cancelled: true,
+      }
+    );
+
+    return appointment;
+  } catch (error) {
+    throw new Error("No se cancelar");
+  }
+};
+
 export {
   addBarberService,
   loginAdminService,
   getAllBarbersService,
   getDataDashboardService,
   getAllAppointmentsService,
+  cancelAppointmentService,
 };

@@ -6,6 +6,7 @@ import {
   getAllBarbers,
   getDataDashboard,
   getAllAppointments,
+  cancelAppointment,
 } from "../controllers/adminController";
 import { schemaValition } from "../middleware/schemaValidator";
 import { barberRegisterSchema } from "../schemas/barberSchemas";
@@ -14,6 +15,7 @@ import authAdmin from "../middleware/authAdmin";
 
 const adminRouter = express.Router();
 
+adminRouter.post("/cancel-appointment", authAdmin, cancelAppointment);
 adminRouter.post("/auth/login", schemaValition(adminLoginSchema), loginAdmin);
 adminRouter.post(
   "/add-barber",
