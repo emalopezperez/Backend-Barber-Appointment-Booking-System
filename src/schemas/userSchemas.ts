@@ -6,7 +6,7 @@ export const userRegistrationSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
     phone: z
       .string()
-      .min(10, { message: "Phone number must be at least 10 digits" }),
+      .min(5, { message: "Phone number must be at least 10 digits" }),
     gender: z
       .enum(["Male", "Female", "Not Selected"])
       .optional()

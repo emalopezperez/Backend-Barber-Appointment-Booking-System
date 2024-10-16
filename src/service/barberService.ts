@@ -2,6 +2,7 @@ import barberModel from "../models/barberModel";
 import appointmentModel from "../models/appointmentModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { Appointment } from "../types/appointment-type";
 
 const loginBarberService = async (email: string, password: string) => {
   try {
@@ -34,4 +35,29 @@ const appointmentsBarberService = async (barberId: string) => {
   }
 };
 
-export { loginBarberService, appointmentsBarberService };
+const appointmentCancelService = async (
+  barberId: string,
+  appointmentId: string
+) => {
+  try {
+    const appointment: Appointment | null = await appointmentModel.findById(
+      appointmentId
+    );
+    if (appointment && appointment.barberId === barberId) {
+      await appointmentModel.findByIdAndUpdate(appointmentId, {
+        cancelled: true,
+      });
+      return { success: true, message: "Cita cancelada correctamente" };
+    }
+
+    return { success: false, message: "Error al cancelar la cita" };
+  } catch (error) {
+    throw new Error("Error ");
+  }
+};
+
+export {
+  loginBarberService,
+  appointmentsBarberService,
+  appointmentCancelService,
+};

@@ -24,8 +24,7 @@ const addBarberService = async (
   imageFile: Express.Multer.File
 ) => {
   try {
-    const { name, email, password, about, available, slots_booked } =
-      dataBarber;
+    const { name, email, password, about, available } = dataBarber;
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -37,7 +36,6 @@ const addBarberService = async (
       password: hashedPassword,
       about,
       available,
-      slots_booked,
       date: Date.now(),
       image: imageUrl,
     };
